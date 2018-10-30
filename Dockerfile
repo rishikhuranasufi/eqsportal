@@ -4,12 +4,12 @@ FROM node:10-alpine
 COPY . /www/
 
 #Installing angularCLI
-RUN npm config set registry https://repo1.ae.sda.corp.telstra.com/nexus/content/groups/npm-group/ && npm install -g @angular/cli
+RUN npm install -g @angular/cli
 
 #Install all dependencies
-RUN cd /www; npm config set registry https://repo1.ae.sda.corp.telstra.com/nexus/content/groups/npm-group/ && npm install
+RUN cd /www; npm install
 #Creating a build using angularCLI
-RUN cd /www; npm config set registry https://repo1.ae.sda.corp.telstra.com/nexus/content/groups/npm-group/ && npm run build
+RUN cd /www; npm run build
 
 # Set work directory to /www
 WORKDIR /www

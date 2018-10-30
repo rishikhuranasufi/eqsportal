@@ -7,6 +7,6 @@ docker stop $(docker ps -q --filter "name=cicd-portal")
 docker rm  $(docker ps -a -q --filter "name=cicd-portal")
 
 docker run -d -t -i  \
--e BUILDER_API_URL='http://10.60.165.12:8090/builder-api' \
+-e BUILDER_API_URL='http://10.60.165.12:8090/eqs-api' \
  -p 4200:4200 \
  --name=cicd-portal  cicd-portal:0.0.15
