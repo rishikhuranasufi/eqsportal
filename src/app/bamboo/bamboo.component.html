@@ -1,0 +1,353 @@
+<main>
+  <form #bambooForm="ngForm">
+    <div class="container-fluid" style="padding-left:40px">
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="text-left">Bamboo Plan Details</h6>
+          <br>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fab fa-github"></i></span>
+            <input type="text" [(ngModel)]="bamboo.githuburi"
+              placeholder="Git uri" name="githuburi" class="form-control"
+              id="githuburi" required #githuburi="ngModel">
+          </div>
+          <div *ngIf="githuburi.errors && githuburi?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Repository git details is required.
+           </div>
+          <br>
+
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-anchor"></i></span>
+            <input type="text" [(ngModel)]="bamboo.bambooUri"
+              placeholder="Bamboo uri" name="bambooUri" class="form-control"
+              id="bambooUri" required #bambooUri="ngModel">
+          </div>
+          <div *ngIf="bambooUri.errors && bambooUri?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Bamboo URI details is required.
+           </div>
+          <br>
+          <div class="row">
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+            <input type="text" [(ngModel)]="bamboo.bamboousername"
+              placeholder="Bamboo username" name="bamboousername" class="form-control"
+              id="bamboousername" required #bamboousername="ngModel">
+          </div>
+          <div *ngIf="bamboousername.errors && bamboousername?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Bamboo Username details is required.
+           </div>
+          <br>
+          </div>
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+            <input type="password" [(ngModel)]="bamboo.bamboopassword"
+              placeholder="Bamboo password" name="bamboopassword" class="form-control"
+              id="bamboopassword" required #bamboopassword="ngModel">
+          </div>
+          <div *ngIf="bamboopassword.errors && bamboopassword?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Bamboo Password details is required.
+           </div>
+          <br>
+          </div>
+          </div>
+
+          <div class="row">
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-tasks"></i></span>
+            <input type="text" [(ngModel)]="bamboo.projectName"
+              placeholder="Project name" name="projectName" class="form-control"
+              id="projectName" required #projectName="ngModel">
+          </div>
+          <div *ngIf="projectName.errors && projectName?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Project Name for bamboo is required.
+           </div>
+          <br>
+          </div>
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-tags"></i></span>
+            <input type="text" [(ngModel)]="bamboo.projectkey"
+              placeholder="Project key" name="projectkey" class="form-control"
+              id="projectkey" required #projectkey="ngModel">
+          </div>
+          <div *ngIf="projectkey.errors && projectkey?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Project Key for bamboo is required.
+           </div>
+          <br>
+          </div>
+          </div>
+          <div class="input-group">
+              <span class="input-group-text"><i class="fa fa-sticky-note"></i></span>
+              <input type="text" [(ngModel)]="bamboo.projectDescription"
+                placeholder="Project description" name="projectDescription" class="form-control"
+                id="projectDescription" required #projectDescription="ngModel">
+            </div>
+            <div *ngIf="projectDescription.errors && projectDescription?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+              Project Description for bamboo is required.
+             </div>
+            <br>
+          <div class="row">
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-tasks"></i></span>
+            <input type="text" [(ngModel)]="bamboo.planName"
+              placeholder="Plan name" name="planName" class="form-control"
+              id="planName" required #planName="ngModel">
+          </div>
+          <div *ngIf="planName.errors && planName?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Plan Name for bamboo is required.
+           </div>
+          <br>
+          </div>
+          <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-tags"></i></span>
+            <input type="text" [(ngModel)]="bamboo.planKey"
+              placeholder="Plan key" name="planKey" class="form-control"
+              id="planKey" required #planKey="ngModel">
+          </div>
+          <div *ngIf="planKey.errors && planKey?.errors['required'] && bambooForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+            Plan Key for bamboo is required.
+           </div>
+          <br>
+          </div>
+          </div>
+
+          <div *ngIf="bamboo.success==false">
+            <button class="btn btn-primary" (click)="createBambooPlan(bambooForm)">Create</button>&nbsp;&nbsp;
+            <button class="btn btn-primary" (click)="resetForm()">
+                Reset</button>
+          </div>
+          <div *ngIf="bamboo.success==true">
+              <button class="btn btn-primary" (click)="resetForm()">Reset</button>&nbsp;&nbsp;&nbsp;
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <h6 class="text-left">Platform</h6>
+            <br>
+            <div class="custom-control custom-radio">
+               <input
+                class="custom-control-input" type="radio"
+                [(ngModel)]="bamboo.environmentType" name="environmentType" id="environmentType1"
+                value="pcf"> <label class="custom-control-label" for="environmentType1">&nbsp;PCF
+              </label>
+            </div>
+            <br>
+            <div class="custom-control custom-radio">
+              <input
+                class="custom-control-input" type="radio"
+                [(ngModel)]="bamboo.environmentType" name="environmentType" id="environmentType2"
+                value="amp" > <label class="custom-control-label" for="environmentType2"> &nbsp;ECS
+              </label>
+            </div>
+            <br>
+            <h6 class="text-left">Language</h6>
+          <div class="custom-control custom-radio">
+            <input
+              class="custom-control-input" type="radio"
+              [(ngModel)]="bamboo.applicationType" name="applicationType" id="applicationType1"
+              value="java" (click)="bamboo.buildType='maven'"> <label class="custom-control-label" for="applicationType1"> &nbsp;Java
+            </label>
+          </div>
+          <br>
+          <div class="custom-control custom-radio">
+            <input
+              class="custom-control-input" type="radio"
+              [(ngModel)]="bamboo.applicationType" name="applicationType"  id="applicationType2"
+              value="javascript" (click)="bamboo.buildType='npm'"><label class="custom-control-label" for="applicationType2">  &nbsp;JavaScript
+            </label>
+          </div>
+          <br>
+          <h6 class="text-left">Build Tool</h6>
+          <div *ngIf="bamboo.applicationType=='java'">
+            <select [(ngModel)]="bamboo.buildType"  name="buildType">
+              <option *ngFor="let c of javaBuildType" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+          </div>
+          <div *ngIf="bamboo.applicationType=='javascript'">
+            <select [(ngModel)]="bamboo.buildType"  name="buildType">
+              <option *ngFor="let c of javascriptBuildType" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+          </div>
+          <br>
+
+          <h6 class="text-left">Continous Integration</h6>
+          <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.jetpack" name="jetpack" id="jetpack">
+              <label class="custom-control-label" for="jetpack"> &nbsp; JetPack</label>
+            </div>
+          <br>
+
+          </div>
+        <div class="col-md-3">
+          <h6 class="text-left">Continuous Delivery&nbsp;</h6>
+          <br>
+          <div class="row">
+          <div class="custom-control custom-checkbox">
+             <input
+              class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.dev"
+              name="dev" id="dev"> <label class="custom-control-label" for="dev">&nbsp;Dev&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+          </div>
+          <div *ngIf="bamboo.dev">
+            <div class="custom-control custom-checkbox">
+                <input
+              class="custom-control-input"  type="checkbox" [(ngModel)]="bamboo.devTest"
+              name="devTest" id="devTest" (ngModelChange)="onClickofTestCasesCheckbox('DEV', bamboo.devTest)" ><label class="custom-control-label" for="devTest"> &nbsp;Run Tests?
+              </label>
+              </div>
+          </div>
+          </div>
+          <br>
+          <div class="row">
+          <div class="custom-control custom-checkbox">
+            <input
+              class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.sqi"
+              name="sqi"  id="sqi"> <label class="custom-control-label" for="sqi">&nbsp;SQI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+            </div>
+            <div *ngIf="bamboo.sqi">
+                <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.sqiTest"
+              name="sqiTest"  id="sqiTest" (ngModelChange)="onClickofTestCasesCheckbox('SQI', bamboo.sqiTest)"> <label  class="custom-control-label" for="sqiTest">&nbsp;Run Tests?
+            </label>
+          </div>
+          </div>
+          </div>
+          <br>
+          <div class="row">
+          <div class="custom-control custom-checkbox">
+             <input
+              class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.sit"
+              name="sit"  id="sit"><label class="custom-control-label" for="sit">&nbsp;SIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+            </div>
+            <div *ngIf="bamboo.sit">
+            <div class="custom-control custom-checkbox">
+                <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.sitTest"
+                name="sitTest" id="sitTest" (ngModelChange)="onClickofTestCasesCheckbox('SIT', bamboo.sitTest)"><label  class="custom-control-label" for="sitTest">&nbsp;Run Tests?
+            </label>
+          </div>
+          </div>
+          </div>
+          <br>
+          <div class="row">
+          <div class="custom-control custom-checkbox">
+            <input
+              class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.svt"
+              name="svt" id="svt"> <label class="custom-control-label" for="svt">&nbsp;SVT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+          </div>
+          <div *ngIf="bamboo.svt">
+              <div class="custom-control custom-checkbox">
+                <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.svtTest"
+                name="svtTest" id="svtTest" (ngModelChange)="onClickofTestCasesCheckbox('SVT', bamboo.svtTest)"> <label  class="custom-control-label" for="svtTest">&nbsp;Run Tests?
+            </label>
+          </div>
+          </div>
+        </div>
+          <br>
+          <div class="row">
+          <div class="custom-control custom-checkbox">
+               <input
+                class="custom-control-input" type="checkbox"
+                [(ngModel)]="bamboo.preprod" name="preprod" id="preprod"><label class="custom-control-label" for="preprod">&nbsp;Pre-Prod&nbsp;&nbsp;
+              </label>
+            </div>
+            <div *ngIf="bamboo.preprod">
+            <div class="custom-control custom-checkbox">
+                  <input
+                  class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.preprodTest"
+                  name="preprodTest" id="preprodTest" (ngModelChange)="onClickofTestCasesCheckbox('PREPROD', bamboo.preprodTest)"><label  class="custom-control-label" for="preprodTest">&nbsp;Run Tests?
+              </label>
+            </div>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+              <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.prod"
+                name="prod" id="prod"> <label class="custom-control-label" for="prod"> &nbsp;Prod &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+              </div>
+              <div *ngIf="bamboo.prod">
+                  <div class="custom-control custom-checkbox">
+                  <input
+                  class="custom-control-input" type="checkbox" [(ngModel)]="bamboo.prodTest"
+                  name="prodTest" id="prodTest" (ngModelChange)="onClickofTestCasesCheckbox('PROD', bamboo.prod)"> <label  class="custom-control-label" for="prodTest" >&nbsp;Run Tests?
+              </label>
+              </div>
+            </div>
+            </div>
+            <br>
+        </div>
+      </div>        
+      </div>
+  </form>
+
+  </main>
+
+  <!-- PopUP for Run test -->
+
+  <div *ngIf="displayCustomPopup" id="light" class="white_content animated" [ngClass]="{'bounceInDown': displayCustomPopup}">
+    <!-- <input type="text" [(ngModel)]="popUpValue.type" style="visibility: hidden"/> -->
+    <p class="popup-header">Test case details</p>
+    <div class="input-group-outer">
+      <div class="input-group">
+          <span class="input-group-text"><i class="fab fa-github"></i></span>
+          <input type="text" [(ngModel)]="popUpValue.testGitURI"
+            placeholder="Git uri for Test Repo" name="testgithuburi" class="form-control"
+            id="testgithuburi" required #testgithuburi="ngModel" (change)="onCursorRelease(popUpValue)" >
+      </div>
+      <div >
+        <div class="input-group input-val">        
+          <span class="input-group-text"><i class="fas fa-wrench"></i></span>
+            <select [(ngModel)]="popUpValue.testCaseExecVia"  name="testBuildType" class="form-control">
+              <option value="" disabled selected hidden>Execution via...</option>
+          <option *ngFor="let c of testCaseToBeExecuteIn" [ngValue]="c.id" (change)="onCursorRelease(popUpValue)">{{c.name}}</option>
+        </select>
+      </div>
+      </div>
+      <div class="input-group input-val">
+          <span class="input-group-text"><i class="fas fa-terminal"></i></span>
+        <input type="text" placeholder="Command to Execute" class="form-control" [(ngModel)]="popUpValue.testCaseCommand"  name="testCaseCommand" (change)="onCursorRelease(popUpValue)">
+      </div>
+      <p *ngIf="showValidationError" style="font-size:12px;color:red;margin:0"><i class="fa fa-exclamation-triangle"></i> Above details are required.</p>        
+      <p class="popup-footer"><button class="btn btn-primary button-footer" (click)="saveTestDetails(popUpValue)">Save</button></p>
+      
+      <span class="close" (click)="closePopup(popUpValue.type)"><i class="fas fa-window-close"></i></span>
+  </div>
+</div>
+  <div *ngIf="displayCustomPopup" id="fade" class="black_overlay"></div>
+        
+  <!-- PopUP for download content-->
+        
+  <div *ngIf="bamboo.failure==true || bamboo.success==true" id="light" class="white_content animated" [ngClass]="{'bounceInDown': bamboo.success}">
+    <p class="popup-header">Bamboo Plan Created</p>
+    <div  *ngIf="bamboo.success==true" class="alert alert-info alert-dismissable text-display">
+      <h6 class="text-left" style="font-weight:normal">
+        <b>Bambo Plan Successfuly Created </b>
+        <br>
+        <b> Bamboo Plan Available at: <a href="{{bamboo.bambooPlanUrl}}" target="_blank">{{bamboo.bambooPlanUrl}}</a>  </b>
+        <br>
+      </h6>        
+    </div>
+    <div *ngIf="bamboo.failure==true">        
+      <div class="alert alert-danger">
+        <h6 class="text-left" style="font-weight:normal">Oops! there seems an issue in Creation.</h6>
+      </div>
+    </div>
+    <span class="close" (click)="closeDownloadPopUp(true)"> <i class="fas fa-window-close"></i></span>
+    <p class="popup-footer" style="padding: 10px;"><button class="btn btn-primary button-footer" (click)="closeDownloadPopUp(true)">Close</button></p>
+  </div>  
+  
+ 
+
+<div *ngIf="bamboo.success==true"  id="fadeResult" class="black_overlay"></div>

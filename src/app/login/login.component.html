@@ -1,0 +1,54 @@
+<main>
+    <form #loginForm="ngForm">                   
+ <!-- PopUP for Login -->
+
+ <div *ngIf="displayLoginPopup" id="light" class="white_content animated" style="line-height: 0.5" [ngClass]="{'bounceInDown': displayLoginPopup}">
+    <!-- <input type="text" [(ngModel)]="popUpValue.type" style="visibility: hidden"/> -->
+    <p class="popup-header">Login Details</p>
+    <div class="container">
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3 "></div>
+            <div class="col-md-6 ">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
+                    <input type="text" [(ngModel)]="login.username"
+                      placeholder="Username" name="username" class="form-control"
+                      id="username" required #username="ngModel">
+                  </div>
+                  <div *ngIf="username.errors && username?.errors['required'] && loginForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                    Username is required.
+                   </div>
+                  <br>
+
+                  <div class="input-group"><span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+                      <input type="password" [(ngModel)]="login.password" placeholder="password" 
+                      name="password" class="form-control" id="password"  required #password="ngModel">
+                    </div>
+                    <div *ngIf="password.errors && password?.errors['required'] && loginForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                      Password required.
+                     </div>
+                  <br>
+                  <div *ngIf="login.success==false">
+                    <button class="btn btn-primary" (click)="loginApp(loginForm)">Login</button>&nbsp;&nbsp;
+                    <button class="btn btn-primary" (click)="resetForm()">Reset</button>
+                  </div>
+                  <div *ngIf="login.success==true">
+                      <button class="btn btn-primary" (click)="resetForm()">Reset</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+            </div>
+            <div class="col-md-3 "></div>
+        </div>
+        <div class="row" style="border-top: 1px solid #5c939f; padding-bottom: 10px; padding-top: 10px;">
+            <div class="col-md-3 "></div>
+                <div class="col-md-6 ">
+                    <br>Need an account?  <a class="homelink" routerLink="/signup" >&nbsp;&nbsp; Sign up now!</a>
+                </div>
+                <div class="col-md-3 "></div>
+        </div>        
+      
+      <span class="close" routerLink="/home"><i class="fas fa-window-close"></i></span>
+    </div>    
+</div>
+  <div *ngIf="displayLoginPopup" id="fade" class="black_overlay"></div>
+</form>
+</main>

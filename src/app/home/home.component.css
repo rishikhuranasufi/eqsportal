@@ -1,0 +1,10 @@
+.container h3 {
+  font-weight: bold;
+  color: #5c939f
+}
+
+#imagedisplay {
+  width: 1000px;
+  height: 562px;
+  background: url('../hpse-cicd.png') no-repeat ;
+}

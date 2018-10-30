@@ -1,0 +1,80 @@
+<main>
+<form #signupForm="ngForm">
+
+
+<div *ngIf="displaySignUpPopup" id="light" class="white_content animated" style="line-height: 0.5" [ngClass]="{'bounceInDown': displaySignUpPopup}">
+                <!-- <input type="text" [(ngModel)]="popUpValue.type" style="visibility: hidden"/> -->
+                <p class="popup-header">SignUp Details</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 "></div>
+            <div class="col-md-6 ">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-address-book"></i></span>
+                    <input type="text" [(ngModel)]="signup.name"
+                      placeholder="fullname" name="name" class="form-control"
+                      id="name" required #name="ngModel">
+                  </div>
+                  <div *ngIf="name.errors && name?.errors['required'] && signupForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                    Name is required.
+                   </div>
+                  <br>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
+                    <input type="text" [(ngModel)]="signup.username"
+                      placeholder="Username" name="username" class="form-control"
+                      id="username" required #username="ngModel">
+                  </div>
+                  <div *ngIf="username.errors && username?.errors['required'] && signupForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                    Username is required.
+                   </div>
+                  <br>
+
+                  <div class="input-group">
+                      <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+                      <input type="password" [(ngModel)]="signup.password"
+                        placeholder="password" name="password"
+                        class="form-control" id="password"  required #password="ngModel">
+                    </div>
+                    <div *ngIf="password.errors && password?.errors['required'] && signupForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                      Password required.
+                     </div>
+                     <br>
+
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input type="email" [(ngModel)]="signup.email" placeholder="Email for notifications"
+                      name="email" class="form-control" id="email" required  [email]="validateEmail" #email="ngModel">
+                  </div>
+                  <div *ngIf="email.errors && signupForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                      <div *ngIf="email?.errors['required']">
+                          Email required for notifications.
+                      </div>
+                      <div *ngIf="email?.errors['email']">
+                          Provide Valid email for notifications
+                      </div>
+                   </div>
+      
+                  <br> <br>
+                  <div *ngIf="signup.success==false">
+                    <button class="btn btn-primary" (click)="createUser(signupForm)">Signup</button>&nbsp;&nbsp;
+                    <button class="btn btn-primary" (click)="resetForm()">
+                        Reset</button>
+                  </div>
+                  <div *ngIf="signup.success==true">
+                      <button class="btn btn-primary" (click)="resetForm()">Reset</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div *ngIf="signup.failure==true">
+                    <br>
+					<br>
+					<div class="alert alert-danger">
+						<h6 class="text-left" style="font-weight:normal">Oops! User creation failed due to : {{signup.errorString}} </h6>
+					</div>
+                    </div>
+            </div>
+            <!--<div class="col-md-3 "></div>-->
+        </div>
+        <span class="close" routerLink="/login"><i class="fas fa-window-close"></i></span>
+    </div></div>
+    <div *ngIf="displaySignUpPopup" id="fade" class="black_overlay"></div>
+</form></main>

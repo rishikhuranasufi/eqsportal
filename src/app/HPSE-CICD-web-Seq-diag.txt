@@ -1,0 +1,29 @@
+alt Step 1 : Reach out to Security team and HPSE DevOps Team
+    APPLICATION Team -> Security: 
+note right of APPLICATION Team 
+    Onboard team to Security tools.
+end note
+    
+    APPLICATION Team -> HPSE DevOps:
+note right of APPLICATION Team
+    Talk to HPSE DevOps team to get below details
+end note
+    
+    HPSE DevOps -> APPLICATION Team:
+note right of APPLICATION Team
+    SSH Key, JenkinsUser and Portal details
+end note
+
+else Step 2 Use CI CD Portal
+    APPLICATION Team->APPLICATION Team: 
+note right of APPLICATION Team 
+Use portal GUI and generate Jenkinsfile and Properties files
+end note 
+note right of APPLICATION Team 
+Update properties files with team specifc details:
+PCF(Credentials and org) SRCCLR, Checkmarx token, Coverity stream,
+end note
+
+else Step 3 Pipeline creation
+    APPLICATION Team -> HPSE DevOps: Reach out to HPSE DevOps team for Pipeline creation
+end 

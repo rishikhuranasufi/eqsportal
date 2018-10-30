@@ -1,0 +1,123 @@
+.form-check-label> input {
+	width: 20px;
+	height: 20px;
+	color: #6c757d;
+}
+
+.modal-dialog{
+	width:500px;
+}
+.modal-body{
+background-color:#6c757d;
+}
+
+.black_overlay {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: .80;
+	filter: alpha(opacity=80);
+  }
+  .white_content {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	padding: 0;
+	/* border: 10px solid #343a40; */
+	background-color: white;
+	z-index: 1002;
+	overflow: auto;
+	color: #000;
+	border-radius: 6px;
+  }
+  .white_content .close{
+		position: absolute;
+    top: 8px;
+    right: 10px;
+    display: inline-block;
+    /* width: 30px; */
+    /* height: 30px; */
+    /* border-radius: 50%; */
+    /* background: #fff; */
+    color: #fff;
+    font-size: 23px;
+    text-align: center;
+  }
+
+  .container-fluid h6 {
+    font-weight: bold;
+    color: #5c939f
+  }
+
+	.popup-header{
+		background: #1d1e23;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #5c939f;
+    line-height: 35px;
+    margin: 0 0 30px 0;
+    color: #5c939f;
+    padding: 5px 20px;
+	}
+
+	.popup-footer{
+		margin-top:15px; 
+		background:
+		 #5c939f; 
+		 color: #fff; 
+		 padding: 5px 30px; 
+		 margin-bottom: 10px
+	}
+
+	.white_content select, .white_content .command{
+		padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border-radius: 5px;
+		width: 50%;
+		border: 1px solid #ced4da;
+	}
+	.white_content .popup-footer{
+		border-top: 1px solid #5c939f;
+		margin: 10px 0 0 0;
+		margin-top:15px; 
+		background: #fff; 
+		color: #fff; 		
+		padding: 10px 0
+	}
+	.button-footer{
+		padding: 5px 30px;
+    /*background: #5c939f;*/
+
+	}
+	
+	.text-display{
+		background: white;
+		border: none;
+		padding: 0 20px;
+	}
+
+
+	.footer-btn{
+		background-color:#5c939f;
+		border-color:white;
+	}
+
+	.input-group-outer{
+		padding: 0 20px;
+	}
+	.input-val{
+		padding: 5px 0;
+	}
+
+	.input-val span{
+		font-size: 15px;
+	}

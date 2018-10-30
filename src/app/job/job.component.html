@@ -1,0 +1,107 @@
+<main>
+<form  #jobForm="ngForm">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 ">
+				<h6 class="text-left">Jenkins Details</h6>
+
+				<div class="input-group">
+					<span class="input-group-text"><i class="fa fa-anchor"></i></span>
+					<input type="text" [(ngModel)]="job.jenkinsuri"
+						placeholder="Jenkins uri" name="jenkinsuri" class="form-control"
+						id="jenkinsuri"  required #jenkinsuri="ngModel">
+        </div>
+        <div *ngIf="jenkinsuri.errors && jenkinsuri?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Jenkins url is required.
+         </div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-text"><i class="fa fa-user-circle"></i></span>
+					<input type="text" [(ngModel)]="job.jenkinsusername"
+						placeholder="Jenkins username" name="jenkinsusername"
+						class="form-control" id="jenkinsusername"  required #jenkinsusername="ngModel">
+        </div>
+        <div *ngIf="jenkinsusername.errors && jenkinsusername?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Jenkins username is required.
+         </div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+					<input type="password" [(ngModel)]="job.jenkinspassword"
+						placeholder="Jenkins Auth Token" name="jenkinspassword"
+						class="form-control" id="jenkinspassword"  required #jenkinspassword="ngModel">
+        </div>
+        <div *ngIf="jenkinspassword.errors && jenkinspassword?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Jenkins Auth Token is required.
+         </div>
+        <br> <br>
+        <div *ngIf="job.success==false">
+        <button class="btn btn-primary"  (click)="createJob(jobForm)"> Create</button>&nbsp;&nbsp;
+        <button class="btn btn-primary"  (click)="resetForm()"> Reset</button>
+        </div>
+        <div *ngIf="job.success==true">
+            <button class="btn btn-primary"  (click)="resetForm()"> Reset</button>
+        </div>
+
+			</div>
+
+			<div class="col-md-6 ">
+				<h6 class="text-left">Pipeline Details</h6>
+				<div class="input-group">
+					<span class="input-group-text"><i class="fa fa-tasks"></i></span>
+					<input type="text" [(ngModel)]="job.jobname"
+						placeholder="Jenkins job name" name="jobname" class="form-control"
+						id="jobname"  required #jobname="ngModel">
+        </div>
+        <div *ngIf="jobname.errors && jobname?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Jenkins job name is required.
+         </div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-text"><i class="fab fa-github"></i></span>
+					<input type="text" [(ngModel)]="job.gituri"
+						placeholder="Git repository url" name="gituri" class="form-control"
+						id="gituri"  required #gituri="ngModel">
+        </div>
+        <div *ngIf="gituri.errors && gituri?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Git repository url required.
+         </div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-text"><i class="fa fa-puzzle-piece"></i></span>
+					<input type="text" [(ngModel)]="job.credentialsId"
+						placeholder="Git credentials id for jenkins" name="credentialsId" class="form-control"
+						id="credentialsId" required #credentialsId="ngModel">
+        </div>
+        <div *ngIf="credentialsId.errors && credentialsId?.errors['required'] && jobForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+          Git Credentials id from jenkins required.
+         </div>
+				<br>
+
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 ">
+				<div *ngIf="job.success==true">
+					<br>
+					<br>
+					<div class="alert alert-secondary">
+						<h6 class="text-left" style="font-weight:normal">Job Created Successfully : <a href="{{job.jenkinsJobUrl}}" target="_blank">{{job.jenkinsJobUrl}}</a></h6>
+					</div>
+				</div>
+
+				<div *ngIf="job.failure==true">
+					<br>
+					<br>
+					<div class="alert alert-danger">
+						<h6 class="text-left" style="font-weight:normal">Oops! there seems an issue in Creation.</h6>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</form>
+</main>

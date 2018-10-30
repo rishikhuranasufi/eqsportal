@@ -1,0 +1,91 @@
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+         <nav id="spy">
+          <ul class="sidebar-nav nav">
+                <li><a class="navbar-brand" href="#"></a></li>
+
+                <li><a routerLink="/home" ><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a></li>
+                <!-- <div *ngIf="userLoggedrole=='ADMIN' || userLoggedrole=='USER'">
+                    <li><a  routerLink="/build"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Pipeline</a></li>
+                    <li><a  routerLink="/job"><i class="fa fa-tasks"></i>&nbsp;&nbsp;Jenkins Job</a></li>
+                    <li><a routerLink="/bamboo" ><i class="fa fa-tasks"></i>&nbsp;&nbsp;Bamboo Plan</a></li>
+                </div> -->
+                
+                <!-- <div *ngIf="userLoggedrole=='ADMIN'"> -->
+                    <li><a  routerLink="/manage"><i class="fa fa-users"></i>&nbsp;&nbsp;Manage Users</a></li>
+                <!-- </div> -->
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Page content -->
+    <div id="page-content-wrapper">
+        <div class="content-header">
+        <h5 id="home">
+        <a  href="#"><i></i> </a> Enterprise Quality Solution training Application
+        <div *ngIf="userLogged==true" class="dropdown" style="float:right">
+            <!--<a  href="#"><i></i> </a> Continuous Integration and Delivery Portal-->
+            <button class="dropbtn"><i class="fa fa-user"></i>&nbsp;{{loggedName}} <i class="fas fa-chevron-circle-down"></i>&nbsp;&nbsp;</button>
+            <div class="dropdown-content">                                    
+                    <a (click)="openChangePasswordPopup()">&nbsp;Change Password &nbsp;&nbsp;</a>
+                    <a routerLink="/logout">&nbsp;&nbsp;Logout</a>
+                
+            </div>
+        </div>            
+        <div *ngIf="userLogged==false" class="dropdown" style="float:right">
+                <button class="dropbtn"><i class="fa fa-user"></i>&nbsp;Guest <i class="fas fa-chevron-circle-down"></i>&nbsp;&nbsp;</button>
+                <div class="dropdown-content">                                                            
+                        <a routerLink="/login">Login</a>
+                </div>                           
+        </div>
+            </h5>
+        </div>
+        <div class="page-content inset" data-spy="scroll" data-target="#spy">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    <!-- PopUP for Change password content-->
+
+    <div *ngIf="displayChangePasswordPopup"  id="fadeResult" class="black_overlay"></div>
+          
+    <div *ngIf="displayChangePasswordPopup" id="light" class="white_content animated" [ngClass]="{'bounceInDown': displayChangePasswordPopup}">
+            <p class="popup-header">Change Password</p>
+      <div class="input-group-outer">
+        <div class="input-group" style="padding-bottom: 10px">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <input type="password" [(ngModel)]="passwordDetails.oldPassword"
+              placeholder="Enter Old password" name="oldPassword" class="form-control"
+              id="oldPassword" required #oldPassword="ngModel" >
+        </div>
+        <div *ngIf="oldPassword.errors && oldPassword?.errors['required'] && passwordDetails.submitted" [ngClass] = "'alert-danger'">
+                Password required.
+               </div>
+        <div >
+            <div class="input-group" style="padding-bottom: 10px">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" [(ngModel)]="passwordDetails.newPassword"
+                          placeholder="Enter New password" name="newPassword" class="form-control"
+                          id="newPassword" required #newPassword="ngModel" >
+            </div>
+        </div>
+        <div class="input-group" style="padding-bottom: 10px">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" [(ngModel)]="passwordDetails.newPasswordConfirm"
+                          placeholder="Enter Confirm New password" name="newPasswordConfirm" class="form-control"
+                          id="newPasswordConfirm" required #newPasswordConfirm="ngModel" >
+        </div>
+        <p *ngIf="showValidationError" style="font-size:12px;color:red;margin:0"><i class="fa fa-exclamation-triangle"></i> Above details are required.</p>
+        <p *ngIf="showValidationErrorMatch" style="font-size:12px;color:red;margin:0"><i class="fa fa-exclamation-triangle"></i> New and Confirm password are not same.</p>
+        <p class="popup-footer"><button class="btn btn-primary button-footer" (click)="updatePasswordDetails(passwordDetails)">Save</button></p>
+        
+        <span class="close" (click)="closePopup()"><i class="fas fa-window-close"></i></span>
+    </div>                          
+      

@@ -1,0 +1,332 @@
+<main>
+    <form #buildForm="ngForm">
+      <div class="container-fluid" style="padding-left:40px">
+        <div class="row">
+          <div class="col-md-4">
+            <h6 class="text-left">Repository Details</h6>
+            <br>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fab fa-github"></i></span>
+              <input type="text" [(ngModel)]="build.githuburi"
+                placeholder="Git uri" name="githuburi" class="form-control"
+                id="githuburi" required #githuburi="ngModel">
+            </div>
+            <div *ngIf="githuburi.errors && githuburi?.errors['required'] && buildForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+              Repository git details is required.
+             </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa fa-puzzle-piece"></i></span>
+              <input type="text" [(ngModel)]="build.githubcredentialid"
+                placeholder="Git credentials id from jenkins"
+                name="githubcredentialid" class="form-control"
+                id="githubcredentialid" required #githubcredentialid="ngModel">
+            </div>
+            <div *ngIf="githubcredentialid.errors && githubcredentialid?.errors['required'] && buildForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+              Git credentials id from jenkins is required.
+             </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              <input type="email" [(ngModel)]="build.email" placeholder="Email for notifications"
+                name="email" class="form-control" id="email" required  [email]="validateEmail" #email="ngModel">
+            </div>
+            <div *ngIf="email.errors && buildForm.submitted && !isValidFormSubmitted" [ngClass] = "'alert-danger'">
+                <div *ngIf="email?.errors['required']">
+                    Email required for notifications.
+                </div>
+                <div *ngIf="email?.errors['email']">
+                    Provide Valid email for notifications
+                </div>
+             </div>
+
+            <br> <br> <br> <br>
+            <div *ngIf="build.success==false">
+              <button class="btn btn-primary" (click)="createPipeline(buildForm)">Create</button>&nbsp;&nbsp;
+              <button class="btn btn-primary" (click)="resetForm()">
+                  Reset</button>
+            </div>
+            <div *ngIf="build.success==true">
+                <button class="btn btn-primary" (click)="resetForm()">Reset</button>&nbsp;&nbsp;&nbsp;
+              </div>
+
+          </div>
+          <div class="col-md-2">
+              <h6 class="text-left">Platform</h6>
+              <br>
+              <div class="custom-control custom-radio">
+                 <input
+                  class="custom-control-input" type="radio"
+                  [(ngModel)]="build.environmentType" name="environmentType" id="environmentType1"
+                  value="pcf"(click)="build.docker=false; build.clair=false; build.nexus=true"> <label class="custom-control-label" for="environmentType1">&nbsp;PCF
+                </label>
+              </div>
+              <br>
+              <div class="custom-control custom-radio">
+                <input
+                  class="custom-control-input" type="radio"
+                  [(ngModel)]="build.environmentType" name="environmentType" id="environmentType2"
+                  value="amp" (click)="build.docker=true; build.nexus=false; build.clair=true"> <label class="custom-control-label" for="environmentType2"> &nbsp;ECS
+                </label>
+              </div>
+              <br>
+              <h6 class="text-left">Language</h6>
+            <div class="custom-control custom-radio">
+              <input
+                class="custom-control-input" type="radio"
+                [(ngModel)]="build.applicationType" name="applicationType" id="applicationType1"
+                value="java" (click)="build.buildType='maven'"> <label class="custom-control-label" for="applicationType1"> &nbsp;Java
+              </label>
+            </div>
+            <br>
+            <div class="custom-control custom-radio">
+              <input
+                class="custom-control-input" type="radio"
+                [(ngModel)]="build.applicationType" name="applicationType"  id="applicationType2"
+                value="javascript" (click)="build.buildType='npm'"><label class="custom-control-label" for="applicationType2">  &nbsp;JavaScript
+              </label>
+            </div>
+            <br>
+            <h6 class="text-left">Build Tool</h6>
+            <div *ngIf="build.applicationType=='java'">
+
+              <select [(ngModel)]="build.buildType"  name="buildType">
+                <option *ngFor="let c of javaBuildType" [ngValue]="c.id">{{c.name}}</option>
+              </select>
+            </div>
+            <div *ngIf="build.applicationType=='javascript'">
+              <select [(ngModel)]="build.buildType"  name="buildType">
+                <option *ngFor="let c of javascriptBuildType" [ngValue]="c.id">{{c.name}}</option>
+              </select>
+            </div>
+            </div>
+          <div class="col-md-3">
+            <h6 class="text-left">Continuous Integration</h6>
+            <br>
+            <div class="custom-control custom-checkbox">
+               <input class="custom-control-input" type="checkbox" [(ngModel)]="build.verify" name="verify" id="verify">
+               <label class="custom-control-label" for="verify">&nbsp; Build & Unit Tests</label>
+            </div>
+            <br>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" [(ngModel)]="build.sonar" name="sonar" id="sonar">
+              <label class="custom-control-label" for="sonar"> &nbsp; Sonarqube</label>
+            </div>
+            <br>
+            <div *ngIf="build.environmentType=='pcf'">
+                <div class="custom-control custom-checkbox">
+                     <input
+                      class="custom-control-input" type="checkbox" [(ngModel)]="build.nexus"
+                      name="nexus" id="nexus"><label class="custom-control-label" for="nexus">&nbsp; Upload Nexus
+                    </label>
+                  </div>
+                  <br>
+            </div>
+            <div *ngIf="build.environmentType=='amp'">
+            <div class="custom-control custom-checkbox">
+               <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="build.docker"
+                name="docker" id="docker"> <label class="custom-control-label" for="docker">&nbsp; Build Docker
+              </label>
+            </div>
+            <br>
+            <div class="custom-control custom-checkbox">
+               <input
+                class="custom-control-input" type="checkbox"
+                [(ngModel)]="build.clair" name="clair" id="clair"> <label class="custom-control-label" for="clair">&nbsp; Clair
+              </label>
+            </div>
+            <br>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input
+                class="custom-control-input" type="checkbox"
+                [(ngModel)]="build.sourceclear" name="sourceclear" id="sourceclear"> <label class="custom-control-label" for="sourceclear"> &nbsp; Source Clear
+              </label>
+            </div>
+            <br>
+            <div class="custom-control custom-radio">
+                 <input
+                  class="custom-control-input" type="radio"
+                  [(ngModel)]="build.coverityCheckmarx" name="coverityCheckmarx" id="coverityCheckmarx1"
+                  value="coverity"> <label class="custom-control-label" for="coverityCheckmarx1">&nbsp;Coverity
+                </label>
+              </div>
+              <br>
+              <div class="custom-control custom-radio">
+                <input
+                  class="custom-control-input" type="radio"
+                  [(ngModel)]="build.coverityCheckmarx" name="coverityCheckmarx"  id="coverityCheckmarx2"
+                  value="checkmarx"> <label class="custom-control-label" for="coverityCheckmarx2">&nbsp;Checkmarx
+                </label>
+              </div>
+              <br>
+
+          </div>
+          <div class="col-md-3">
+            <h6 class="text-left">Continuous Delivery&nbsp;</h6>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+               <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="build.dev"
+                name="dev" id="dev"> <label class="custom-control-label" for="dev">&nbsp;Dev&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+            </div>
+            <div *ngIf="build.dev">
+              <div class="custom-control custom-checkbox">
+                  <input
+                class="custom-control-input"  type="checkbox" [(ngModel)]="build.devTest"
+                name="devTest" id="devTest" (ngModelChange)="onClickofTestCasesCheckbox('DEV', build.devTest)" ><label class="custom-control-label" for="devTest"> &nbsp;Run Tests?
+                </label>
+                </div>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+              <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="build.sqi"
+                name="sqi"  id="sqi"> <label class="custom-control-label" for="sqi">&nbsp;SQI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+              </div>
+              <div *ngIf="build.sqi">
+                  <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" [(ngModel)]="build.sqiTest"
+                name="sqiTest"  id="sqiTest" (ngModelChange)="onClickofTestCasesCheckbox('SQI', build.sqiTest)"> <label  class="custom-control-label" for="sqiTest">&nbsp;Run Tests?
+              </label>
+            </div>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+               <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="build.sit"
+                name="sit"  id="sit"><label class="custom-control-label" for="sit">&nbsp;SIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+              </div>
+              <div *ngIf="build.sit">
+              <div class="custom-control custom-checkbox">
+                  <input
+                  class="custom-control-input" type="checkbox" [(ngModel)]="build.sitTest"
+                  name="sitTest" id="sitTest" (ngModelChange)="onClickofTestCasesCheckbox('SIT', build.sitTest)"><label  class="custom-control-label" for="sitTest">&nbsp;Run Tests?
+              </label>
+            </div>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+              <input
+                class="custom-control-input" type="checkbox" [(ngModel)]="build.svt"
+                name="svt" id="svt"> <label class="custom-control-label" for="svt">&nbsp;SVT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+            </div>
+            <div *ngIf="build.svt">
+                <div class="custom-control custom-checkbox">
+                  <input
+                  class="custom-control-input" type="checkbox" [(ngModel)]="build.svtTest"
+                  name="svtTest" id="svtTest" (ngModelChange)="onClickofTestCasesCheckbox('SVT', build.svtTest)"> <label  class="custom-control-label" for="svtTest">&nbsp;Run Tests?
+              </label>
+            </div>
+            </div>
+          </div>
+            <br>
+            <div class="row">
+            <div class="custom-control custom-checkbox">
+                 <input
+                  class="custom-control-input" type="checkbox"
+                  [(ngModel)]="build.preprod" name="preprod" id="preprod"><label class="custom-control-label" for="preprod">&nbsp;Pre-Prod&nbsp;&nbsp;
+                </label>
+              </div>
+              <div *ngIf="build.preprod">
+              <div class="custom-control custom-checkbox">
+                    <input
+                    class="custom-control-input" type="checkbox" [(ngModel)]="build.preprodTest"
+                    name="preprodTest" id="preprodTest" (ngModelChange)="onClickofTestCasesCheckbox('PREPROD', build.preprodTest)"><label  class="custom-control-label" for="preprodTest">&nbsp;Run Tests?
+                </label>
+              </div>
+              </div>
+              </div>
+              <br>
+              <div class="row">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input" type="checkbox" [(ngModel)]="build.prod"
+                  name="prod" id="prod"> <label class="custom-control-label" for="prod"> &nbsp;Prod &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                </div>
+                <div *ngIf="build.prod">
+                    <div class="custom-control custom-checkbox">
+                    <input
+                    class="custom-control-input" type="checkbox" [(ngModel)]="build.prodTest"
+                    name="prodTest" id="prodTest" (ngModelChange)="onClickofTestCasesCheckbox('PROD', build.prod)"> <label  class="custom-control-label" for="prodTest" >&nbsp;Run Tests?
+                </label>
+                </div>
+              </div>
+              </div>
+              <br>
+          </div>
+        </div>        
+        </div>
+    </form>
+
+    </main>
+
+    <!-- PopUP for Run test -->
+
+    <div *ngIf="displayCustomPopup" id="light" class="white_content animated" [ngClass]="{'bounceInDown': displayCustomPopup}">
+      <!-- <input type="text" [(ngModel)]="popUpValue.type" style="visibility: hidden"/> -->
+      <p class="popup-header">Test case details</p>
+      <div class="input-group-outer">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fab fa-github"></i></span>
+            <input type="text" [(ngModel)]="popUpValue.testGitURI"
+              placeholder="Git uri for Test Repo" name="testgithuburi" class="form-control"
+              id="testgithuburi" required #testgithuburi="ngModel" (change)="onCursorRelease(popUpValue)" >
+        </div>
+        <div >
+          <div class="input-group input-val">        
+            <span class="input-group-text"><i class="fas fa-wrench"></i></span>
+              <select [(ngModel)]="popUpValue.testCaseExecVia"  name="testBuildType" class="form-control">
+                <option value="" disabled selected hidden>Execution via...</option>
+            <option *ngFor="let c of testCaseToBeExecuteIn" [ngValue]="c.id" (change)="onCursorRelease(popUpValue)">{{c.name}}</option>
+          </select>
+        </div>
+        </div>
+        <div class="input-group input-val">
+            <span class="input-group-text"><i class="fas fa-terminal"></i></span>
+          <input type="text" placeholder="Command to Execute" class="form-control" [(ngModel)]="popUpValue.testCaseCommand"  name="testCaseCommand" (change)="onCursorRelease(popUpValue)">
+        </div>
+        <p *ngIf="showValidationError" style="font-size:12px;color:red;margin:0"><i class="fa fa-exclamation-triangle"></i> Above details are required.</p>        
+        <p class="popup-footer"><button class="btn btn-primary button-footer" (click)="saveTestDetails(popUpValue)">Save</button></p>
+        
+        <span class="close" (click)="closePopup(popUpValue.type)"><i class="fas fa-window-close"></i></span>
+    </div>
+  </div>
+    <div *ngIf="displayCustomPopup" id="fade" class="black_overlay"></div>
+          
+    <!-- PopUP for download content-->
+          
+    <div *ngIf="build.failure==true || build.success==true" id="light" class="white_content animated" [ngClass]="{'bounceInDown': build.success}">
+      <p class="popup-header">Download File</p>
+      <div  *ngIf="build.success==true" class="alert alert-info alert-dismissable text-display">
+        <h6 class="text-left" style="font-weight:normal">
+          <b>Jenkinsfile, jenkins-env.properties created successfully, download from below buttons and save them to root of your repository</b><br><br>
+          <button class="btn btn-primary" (click)="downloadJenkinsFile()">Jenkinsfile</button>&nbsp;&nbsp;<button class="btn btn-primary" (click)="downloadJenkinsEnvFile()">jenkins-env.properties</button>
+        </h6>        
+      </div>
+      <div *ngIf="build.failure==true">        
+        <div class="alert alert-danger">
+          <h6 class="text-left" style="font-weight:normal">Oops! there seems an issue in Creation.</h6>
+        </div>
+      </div>
+      <p style="font-size:13px;color:red;margin:0; padding:0 20px"><i class="fa fa-exclamation-triangle"></i> Please download before closing Popup.</p>              
+      <span class="close" (click)="closeDownloadPopUp(true)"> <i class="fas fa-window-close"></i></span>
+      <p class="popup-footer" style="padding: 10px;"><button class="btn btn-primary button-footer" (click)="closeDownloadPopUp(true)">Close</button></p>
+    </div>  
+    
+   
+
+<div *ngIf="build.success==true"  id="fadeResult" class="black_overlay"></div>
