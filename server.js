@@ -10,7 +10,7 @@ console.log("Root path is "+ rootPath);
 var fileName = rootPath + 'assets/appconfig.json';
 var file = require(fileName);
 
-file.servicesBaseUrl =  process.env.BUILDER_API_URL || 'http://eqslearning.xyz:8090/eqs-group';
+file.servicesBaseUrl =  process.env.BUILDER_API_URL || 'http://eqslearnings.com:8090/eqs-group';
 
 fs.writeFile(fileName, JSON.stringify(file), function (err) {
   if (err) return console.log(err);
